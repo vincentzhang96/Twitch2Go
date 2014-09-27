@@ -1,0 +1,160 @@
+:root {
+	--twitch-purple: #6441A5;
+	--twitch-light-purple: #B9A3E3;
+	--twitch-dark-grey: #262626;
+	--twitch-light-grey: #F1F1F1;
+}
+
+body {
+	background-color: var(--twitch-light-grey);
+	margin: 0;
+	padding: 0;
+	-moz-user-select: none;
+	color: var(--twitch-dark-grey);
+	font-family: Helvetica,Arial,san-serif;
+	font-size: 12px;
+}
+
+p {
+	color: var(--twitch-light-grey);
+}
+
+div {
+	padding: 0;
+	margin: 0;
+}
+
+a:active,
+a:focus {
+	outline: none;
+}
+
+div.header {
+	width: 100%;
+	margin: 0;
+	padding: 8px 0;
+	top: 0;
+	left: 0;
+	text-align: center;
+	background-color: var(--twitch-purple);
+}
+div.header img {
+	position: relative;
+	top: 6px;
+}
+div.header h1 {
+	padding: 0px;
+	margin: 0;
+	color: var(--twitch-light-grey);
+	font-size: 30px;
+}
+
+.tabs {
+	margin: 0;
+	padding: 0px 1px;
+	background-color: var(--twitch-purple);
+}
+
+.tabs li {
+	list-style: none;
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+.tabs a {
+	padding: 8px 0px;
+	margin: 0 -0.5px;
+	width: 33%;
+	display: inline-block;
+	background: var(--twitch-purple);
+	color: var(--twitch-light-grey);
+	text-decoration:none;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.tabs a:hover {
+	background: var(--twitch-light-purple);
+}
+
+.tabs a.active{
+	background: var(--twitch-light-grey);
+	color: var(--twitch-dark-grey);
+}
+
+.content {
+	padding: 8px;
+	width: 314px;
+}
+
+.content h2 {
+	width: 100%;
+	margin: 0;
+	padding: 8px 0;
+	top: 0;
+	left: 0;
+	text-align: center;
+}
+
+.topgames ul {
+	display: inline;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.topgames li {
+	list-style: none;
+	width: 320px;
+	height: 36px;
+	text-align: left;
+	padding: 0;
+	margin: 2px;
+}
+
+.topgames li img {
+	float: left;
+	vertical-align: top;
+}
+
+.topgames li {
+	cursor: pointer;
+}
+
+.topgames li:hover {
+	background-color: var(--twitch-light-purple);
+}
+
+.topgames li .name {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 240px;
+	height: 1em;
+	padding: 2px 8px;
+	font-size: 16px;
+	font-weight: bold;
+	position: relative;
+	left: 0;
+	top: 0;
+}
+
+.topgames li .info {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 240px;
+	height: 1em;
+	padding: 0px 8px;
+	font-size: 14px;
+	position: relative;
+	left: 0;
+	top: 0;
+	color: #AAA;
+}
+
+.topgames li:hover .info {
+	color: var(--twitch-dark-grey);
+}

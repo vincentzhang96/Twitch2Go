@@ -1,0 +1,28 @@
+{
+  "name": "twitch2go",
+  "title": "Twitch2Go",
+  "id": "jid1-2VBO5XItWZvxhg",
+  "description": "An add-on to notify you when your favorite Twitch streamers are broadcasting and browse online streams.",
+  "author": "vincentzhang1996@gmail.com",
+  "license": "MPL 2.0",
+  "version": "0.1",
+  "preferences": [
+	{
+		"name": "iconType",
+		"title": "Icon Style",
+		"description": "Choose the dark-on-light or light-on-dark icon for Twitch2Go to best fit your Firefox theme.",
+		"type": "radio",
+		"value": "dark",
+		"options": [
+			{
+				"value": "dark",
+				"label": "Dark-on-light"
+			},
+			{
+				"value": "light",
+				"label": "Light-on-dark"
+			}
+		]
+	}
+  ]
+}

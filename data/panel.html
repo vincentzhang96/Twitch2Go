@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="panel.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div class="header"> 
+			<h1><img src="icons/icon_lightondark_32.png"></img> Twitch2Go<h1>
+		</div>
+		<ul class="tabs">
+			<li><a href="#home">Home</a></li>
+			<li><a href="#fav">Favorites</a></li>
+			<li><a href="#config">Configure</a></li>
+		</ul>
+		<div id="home" class="content">
+			<h2>Top Games Streaming</h2>
+			<div class="topgames">
+				<ul class="gamelist">
+				
+				</ul>
+			</div>
+		</div>
+		<div id="fav" class="content">
+			<h2>Favorite Channels</h2>
+			<form id="addStreamer" name="addStreamerForm" action="null.html">
+				<input type="text" name="addStreamer" placeholder="Add channel..." size="40">
+				<input type="submit" value="Add"><br/>
+				<span id="addStatus"></span>
+			</form>
+			
+		</div>
+		<div id="config" class="content">
+			<h2>Configure Twitch2Go</h2>
+			<label><input type="checkbox" name="toastNotifications">Enable desktop toast notifications</label><br/>
+			<label><input type="checkbox" name="test">Test</label><br/>
+		</div>
+	</body>
+</html>
