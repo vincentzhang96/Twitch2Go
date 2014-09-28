@@ -7,22 +7,22 @@
   "license": "MPL 2.0",
   "version": "0.1",
   "preferences": [
-	{
-		"name": "iconType",
-		"title": "Icon Style",
-		"description": "Choose the dark-on-light or light-on-dark icon for Twitch2Go to best fit your Firefox theme.",
-		"type": "radio",
-		"value": "dark",
-		"options": [
-			{
-				"value": "dark",
-				"label": "Dark-on-light"
-			},
-			{
-				"value": "light",
-				"label": "Light-on-dark"
-			}
-		]
-	}
+    {
+        "name": "iconType",
+        "title": "Icon Style",
+        "description": "Choose the dark-on-light or light-on-dark icon for Twitch2Go to best fit your Firefox theme.",
+        "type": "radio",
+        "value": "dark",
+        "options": [
+            {
+                "value": "dark",
+                "label": "Dark-on-light"
+            },
+            {
+                "value": "light",
+                "label": "Light-on-dark"
+            }
+        ]
+    }
   ]
 }
