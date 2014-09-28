@@ -2,8 +2,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="perfect-scrollbar.min.js"></script>
 		<script type="text/javascript" src="panel.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="perfect-scrollbar.min.css">
 	</head>
 	<body>
 		<div class="header"> 
@@ -14,13 +16,18 @@
 			<li><a href="#fav">Favorites</a></li>
 			<li><a href="#config">Configure</a></li>
 		</ul>
-		<div id="home" class="content">
-			<h2>Top Games Streaming</h2>
-			<div class="topgames">
-				<ul class="gamelist">
-				
-				</ul>
+		<div id="home" class="content">	
+				<h1 id="gameback">&#171;</h1>
+				<h2 id="topgametitle">Top Games Streaming</h2>
+				<div class="scroller" id="gamescroller">
+					<div class="topgames">
+						<ul class="gamelist">
+
+						</ul>
+					</div>
+				</div>
 			</div>
+			
 		</div>
 		<div id="fav" class="content">
 			<h2>Favorite Channels</h2>
@@ -33,8 +40,16 @@
 		</div>
 		<div id="config" class="content">
 			<h2>Configure Twitch2Go</h2>
-			<label><input type="checkbox" name="toastNotifications">Enable desktop toast notifications</label><br/>
-			<label><input type="checkbox" name="test">Test</label><br/>
+			<table>
+				<tr>
+					<td style="width: 280px">Enable desktop toast notifications</td>
+					<td><input type="checkbox" name="toastNotifications"></td>
+				</tr>
+				<tr>
+					<td>Set poll interval (seconds)</td>
+					<td><input type="number" maxlength="4" value="10" name="interval" min="1" max="99" style="width: 50px"></td>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>

@@ -1,9 +1,10 @@
-/* ----------------------------------------------------------------------------------------
-
-	TABS SETUP
-
-*/
 $(document).ready(function() {
+	$("#gameback").hide();
+	
+	$(".scroller").each(function() {
+		$(this).perfectScrollbar();
+	});
+
 	$('ul.tabs').each(function(){
 		//	http://www.jacklmoore.com/notes/jquery-tabs/
 		var $active, $content, $links = $(this).find('a');
