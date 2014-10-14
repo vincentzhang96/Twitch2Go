@@ -1,38 +1,80 @@
 var loadingGameList = 0;
 var currentGameName = "";
-self.port.on("panelVisible", function(isVisible) {
-    if(isVisible) {
-        getTopGames();
-    } else {
-    
-    }
-});
 
+function spinner(id, classes) {
+    var s = '<div';
+    if (typeof id === "string") {
+        s = s + ' id="' + id + '"';
+    }
+    s = s + ' class="spinner';
+    if (typeof classes === "string") {
+        s = s + ' ' + classes;
+    }
+    s = s + '">';
+    return s +
+        '<div class="spinner-container container1"><div class="circle1"></div><div class="circle2"></div><div ' +
+        'class="circle3"></div><div class="circle4"></div></div><div class="spinner-container container2"><div ' +
+        'class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div>' +
+        '</div><div class="spinner-container container3"><div class="circle1"></div><div class="circle2"></div>' +
+        '<div class="circle3"></div><div class="circle4"></div></div></div>';
+}
+
+/*
+ * Clears the topGames section, shows a loading indicator, and invokes the API call
+ * to retrieve the top games on Twitch.
+ */
 function getTopGames() {
     $(".gameitem").remove();
     $("ul.gamelist").after(spinner("gameListSpinner", "gameitem"));
-    loadingGameList++;
-    self.port.emit("invoke", {functName: "getTopGames", args: {lim: 30}});
+    loadingGameList += 1;
+    self.port.emit("invoke", {
+        functName: "getTopGames",
+        args: {
+            lim: 30
+        }
+    });
 }
 
-self.port.on("REQgetTopGames", function(result) {
+/*
+ * Handles panel visibility events that are fired when the panel is shown or hidden.
+ */
+self.port.on("panelVisible", function (isVisible) {
+    if (isVisible) {
+        getTopGames();
+    } else {
+
+    }
+});
+
+
+
+/*
+ * Handles the getTopGames API result - processes and displays the results.
+ */
+self.port.on("REQgetTopGames", function (result) {
+    var i, game, gameId, html;
     $("#topgametitle").text("Top Games Streaming");
     $(".gameitem").remove();
     $("#gameback").hide();
-    if(!result.syserr) {
-        if(loadingGameList > 0) {
-            loadingGameList--;
-            for(var i = result.top.length - 1; i >= 0; i--) {
-                var game = result.top[i];
-                var gameId = game.game._id;
-                var html = jsonToDOM([
-                    "li", {class: "gameitem", id: "gameitem-"+gameId},
-                    [
-                        "a", {},
+    if (!result.syserr) {
+        if (loadingGameList > 0) {
+            loadingGameList -= 1;
+            for (i = result.top.length - 1; i >= 0; i -= 1) {
+                game = result.top[i];
+                gameId = game.game._id;
+                html = jsonToDOM(["li", {class: "gameitem", id: "gameitem-" + gameId},
+                    ["a", {},
                         [
-                            ["span", {}, ["img", {src: game.game.logo.small, alt: "", width: "60px", height: "36px"}]],
+                            ["span", {},
+                                ["img", {
+                                    src: game.game.logo.small,
+                                    alt: "",
+                                    width: "60px",
+                                    height: "36px"
+                                }]
+                            ],
                             ["div", {class: "name"}, game.game.name],
-                            ["div", {class: "info"}, game.viewers+" viewers on "+game.channels+" channels"]
+                            ["div", {class: "info"}, game.viewers + " viewers on " + game.channels + " channels"]
                         ]
                     ]
                 ], document, {});
@@ -41,44 +83,68 @@ self.port.on("REQgetTopGames", function(result) {
             }
         }
     } else {
-        console.log("errorGetTopGames: "+result.result.status+": "+result.result.message);
-        $("div.gamelist").text("Unable to load results: "+result.result.message);
+        console.log("errorGetTopGames: " + result.result.status + ": " + result.result.message);
+        $("div.gamelist").text("Unable to load results: " + result.result.message);
     }
     $("#gamescroller").scrollTop(0);
     $("#gamescroller").perfectScrollbar("update");
 });
 
+/*
+ * Helper function for handling getTopGames results.
+ */
 function iHateJavaScriptApplyGameClick(gameId, name) {
-    $("#gameitem-"+gameId).click(function() { handleGameClick(name); return false; });
+    $("#gameitem-" + gameId).click(function () {
+        handleGameClick(name);
+        return false;
+    });
 }
 
+/*
+ *  Handles clicks on top game results. Transitions to the stream list and invokes the API call.
+ */
 function handleGameClick(gameName) {
     $(".gameitem").remove();
     $("ul.gamelist").after(spinner("gameListSpinner", "gameitem"));
-    loadingGameList++;
+    loadingGameList += 1;
     currentGameName = gameName;
-    self.port.emit("invoke", {functName: "getStreams", args: {game: gameName}});
+    self.port.emit("invoke", {
+        functName: "getStreams",
+        args: {
+            game: gameName
+        }
+    });
 }
 
-self.port.on("REQgetStreams", function(result) {
+/*
+ * Handles the getStreams API result - processes and displays the results.
+ */
+self.port.on("REQgetStreams", function (result) {
+    var i, stream, streamId, html;
     $("#topgametitle").text(currentGameName);
     $(".gameitem").remove();
     $("#gameback").show();
     $("#gameback").click(getTopGames);
-    if(!result.syserr) {
-        if(loadingGameList > 0) {
-            loadingGameList--;
-            for(var i = result.streams.length - 1; i >= 0; i--) {
-                var stream = result.streams[i];
-                var streamId = stream._id;
-                var html = jsonToDOM([
-                    "li", {class: "gameitem", id: "gameitem-"+streamId},
-                    [
-                        "a", {},
+    if (!result.syserr) {
+        if (loadingGameList > 0) {
+            loadingGameList -= 1;
+            for (var i = result.streams.length - 1; i >= 0; i--) {
+                stream = result.streams[i];
+                streamId = stream._id;
+                html = jsonToDOM([
+                    "li", {class: "gameitem", id: "gameitem-" + streamId},
+                    ["a", {},
                         [
-                            ["span", {}, ["img", {src: stream.channel.logo, alt: "", width: "36px", height: "36px"}]],
+                            ["span", {},
+                                ["img", {
+                                    src: stream.channel.logo,
+                                    alt: "",
+                                    width: "36px",
+                                    height: "36px"
+                                }]
+                            ],
                             ["div", {class: "name"}, stream.channel.display_name],
-                            ["div", {class: "info"}, stream.viewers+" viewers"]
+                            ["div", {class: "info"}, stream.viewers + " viewers"]
                         ]
                     ]
                 ], document, {});
@@ -87,73 +153,72 @@ self.port.on("REQgetStreams", function(result) {
             }
         }
     } else {
-        console.log("errorGetStreams: "+result.result.status+": "+result.result.message);
-        $("div.gamelist").text("Unable to load results: "+result.result.message);
+        console.log("errorGetStreams: " + result.result.status + ": " + result.result.message);
+        $("div.gamelist").text("Unable to load results: " + result.result.message);
     }
     $("#gamescroller").scrollTop(0);
     $("#gamescroller").perfectScrollbar("update");
 });
 
+/*
+ * Handles clicks on stream links - directs the browser to open a new tab of the stream.
+ */
 function openTopGamesTab(streamId, url) {
-    $("#gameitem-"+streamId).click(function() { self.port.emit("openTab", url); return false; });
+    $("#gameitem-" + streamId).click(function () {
+        self.port.emit("openTab", url);
+        return false;
+    });
 }
 
-$("#addStreamer").submit(function(event) {
+$("#addStreamer").submit(function (event) {
     event.preventDefault();
     var name = $("#addStreamer input:first").val();
-    if(typeof name != "string" || name.trim().length == 0) {
+    if (typeof name != "string" || name.trim().length == 0) {
         $("#addStatus").text("Please enter a name").show();
         return;
     }
     name = name.trim();
     $("#addStatus").text("Finding...").show();
-    self.port.emit("invoke", {functName: "getChannel", args: {name: name}});
+    self.port.emit("invoke", {
+        functName: "getChannel",
+        args: {
+            name: name
+        }
+    });
 });
 
-self.port.on("REQgetChannel", function(result) {
-    if(!result.syserr) {
+self.port.on("REQgetChannel", function (result) {
+    if (!result.syserr) {
         console.log(result);
-        $("#addStatus").text("Added "+result.display_name).show();
+        $("#addStatus").text("Added " + result.display_name).show();
     } else {
-        console.log("errorGetChannel: "+result.result.status+": "+result.result.message);
-        $("#addStatus").text("Unable to add channel: "+result.result.message).show();
+        console.log("errorGetChannel: " + result.result.status + ": " + result.result.message);
+        $("#addStatus").text("Unable to add channel: " + result.result.message).show();
     }
 });
 
 
 
-$("#config input[name='toastNotifications']").change(function() {
-    if($(this).is(':checked')) {
+$("#config input[name='toastNotifications']").change(function () {
+    if ($(this).is(':checked')) {
         console.log("toastChecked");
     } else {
         console.log("toastUnchecked");
     }
 });
-$("#config input[name='interval']").change(function() {
+
+$("#config input[name='interval']").change(function () {
     var value = $(this).val();
-    if(value < 1 || value > 99) {
+    if (value < 1 || value > 99) {
         return;
     }
     self.port.emit("updateInterval", value);
 });
 
-self.port.on("setInterval", function(interval) {
+self.port.on("setInterval", function (interval) {
     $("#config input[name='interval']").val(interval);
 });
 
-function spinner(id, classes) {
-    var s = '<div';
-    if(typeof id === "string") {
-        s = s+' id="'+id+'"';
-    }
-    s = s+' class="spinner';
-    if(typeof classes === "string") {
-        s = s+' '+classes;
-    }
-    s = s+'">'
-    return s+'<div class="spinner-container container1"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div><div class="spinner-container container2"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div><div class="spinner-container container3"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div></div>';
-
-}
 
 /*dom insertion library function from MDN - https://developer.mozilla.org/en-US/docs/XUL_School/DOM_Building_and_HTML_Insertion*/
 jsonToDOM.namespaces = {
