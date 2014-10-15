@@ -149,7 +149,7 @@ self.port.on("REQgetStreams", function (result) {
                     ]
                 ], document, {});
                 $("ul.gamelist").after(html);
-                openTopGamesTab(streamId, stream.channel.url);
+                openTopGamesTabOnClick(streamId, stream.channel.url);
             }
         }
     } else {
@@ -163,7 +163,7 @@ self.port.on("REQgetStreams", function (result) {
 /*
  * Handles clicks on stream links - directs the browser to open a new tab of the stream.
  */
-function openTopGamesTab(streamId, url) {
+function openTopGamesTabOnClick(streamId, url) {
     $("#gameitem-" + streamId).click(function () {
         self.port.emit("openTab", url);
         return false;
@@ -189,7 +189,7 @@ $("#addStreamer").submit(function (event) {
 
 self.port.on("REQgetChannel", function (result) {
     if (!result.syserr) {
-        console.log(result);
+        self.port.emit("addFavStreamer", {name: result.name, displayName: result.display_name});
         $("#addStatus").text("Added " + result.display_name).show();
     } else {
         console.log("errorGetChannel: " + result.result.status + ": " + result.result.message);
@@ -201,9 +201,9 @@ self.port.on("REQgetChannel", function (result) {
 
 $("#config input[name='toastNotifications']").change(function () {
     if ($(this).is(':checked')) {
-        console.log("toastChecked");
+        self.port.emit("setToast", true);
     } else {
-        console.log("toastUnchecked");
+        self.port.emit("setToast", false);
     }
 });
 
