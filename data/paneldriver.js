@@ -207,6 +207,10 @@ $("#config input[name='toastNotifications']").change(function () {
     }
 });
 
+self.port.on("setToast", function (toast) {
+    $("#config input[name='toastNotifications']").prop('checked', toast);
+});
+
 $("#config input[name='interval']").change(function () {
     var value = $(this).val();
     if (value < 1 || value > 99) {
@@ -218,6 +222,7 @@ $("#config input[name='interval']").change(function () {
 self.port.on("setInterval", function (interval) {
     $("#config input[name='interval']").val(interval);
 });
+
 
 
 /*dom insertion library function from MDN - https://developer.mozilla.org/en-US/docs/XUL_School/DOM_Building_and_HTML_Insertion*/
