@@ -1,4 +1,4 @@
 Twitch2Go
 =========
 
-Firefox plugin that shows notifications when favorited streamers start streaming. Also can browse top games and streamers.
+Twitch2Go is a Firefox addon that displays desktop notifications when your favorite streamers start streaming.
