@@ -25,3 +25,9 @@ $(document).ready(function() {
         });
     });
 });
+
+function imgError(img) {
+    img.onerror = "";
+    img.src = "icons/game_404.jpg";
+    return true;
+}

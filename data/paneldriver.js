@@ -68,7 +68,9 @@ self.port.on("REQgetTopGames", function (result) {
                             ["span", {},
                                 ["img", {
                                     src: game.game.logo.small,
+                                    class: "gameimg",
                                     alt: "",
+                                    onerror: "imgError(this)",
                                     width: "60px",
                                     height: "36px"
                                 }]
@@ -149,7 +151,7 @@ self.port.on("REQgetStreams", function (result) {
                     ]
                 ], document, {});
                 $("ul.gamelist").after(html);
-                openTopGamesTabOnClick(streamId, stream.channel.url);
+                openUrlOnDomIdClicked("#gameitem-" + streamId, stream.channel.url);
             }
         }
     } else {
@@ -163,9 +165,9 @@ self.port.on("REQgetStreams", function (result) {
 /*
  * Handles clicks on stream links - directs the browser to open a new tab of the stream.
  */
-function openTopGamesTabOnClick(streamId, url) {
-    $("#gameitem-" + streamId).click(function () {
-        self.port.emit("openTab", url);
+function openUrlOnDomIdClicked(domId, url) {
+    $(domId).click(function () {
+        self.port.emit("openStreamUrl", url);
         return false;
     });
 }
@@ -187,6 +189,26 @@ $("#addStreamer").submit(function (event) {
     });
 });
 
+self.port.on("favList", function (streamers) {
+    var online = {};
+    var offline = {};
+    for (key in streamers) {
+        if (streamers[key].online) {
+            online[key] = streamers[key];
+        } else {
+            offline[key] = streamers[key];
+        }
+    }
+    layoutFavorites(online, offline);
+});
+
+function layoutFavorites(onlineStreamers, offlineStreamers) {
+    $(".favoriteItem").remove();
+    
+
+
+}
+
 self.port.on("REQgetChannel", function (result) {
     if (!result.syserr) {
         self.port.emit("addFavStreamer", {name: result.name, displayName: result.display_name});
@@ -200,15 +222,7 @@ self.port.on("REQgetChannel", function (result) {
 
 
 $("#config input[name='toastNotifications']").change(function () {
-    if ($(this).is(':checked')) {
-        self.port.emit("setToast", true);
-    } else {
-        self.port.emit("setToast", false);
-    }
-});
-
-self.port.on("setToast", function (toast) {
-    $("#config input[name='toastNotifications']").prop('checked', toast);
+    self.port.emit("updateConfig", {toast: $(this).is(':checked')});
 });
 
 $("#config input[name='interval']").change(function () {
@@ -216,13 +230,38 @@ $("#config input[name='interval']").change(function () {
     if (value < 1 || value > 99) {
         return;
     }
-    self.port.emit("updateInterval", value);
+    self.port.emit("updateConfig", {interval: value});
 });
 
-self.port.on("setInterval", function (interval) {
-    $("#config input[name='interval']").val(interval);
+$("#config select[name='streamOpen']").change(function () {
+    self.port.emit("updateConfig", {streamOpen: $(this).find("option:selected").val()});
 });
 
+$("#config input[name='popoutPlayer']").change(function () {
+    self.port.emit("updateConfig", {popout: $(this).is(':checked')});
+});
+
+$("#config input[name='sortFavoritesByGame']").change(function () {
+    self.port.emit("updateConfig", {sortByGame: $(this).is(':checked')});
+});
+
+self.port.on("updateConfig", function (config) {
+    if ("interval" in config) {
+        $("#config input[name='interval']").val(config.interval);
+    }
+    if ("toast" in config) {
+        $("#config input[name='toastNotifications']").prop('checked', config.toast);
+    }
+    if ("streamOpen" in config) {
+        $("#config select[name='streamOpen']").val(config.streamOpen);
+    }
+    if ("popout" in config) {
+        $("#config input[name='popoutPlayer']").prop('checked', config.popout);
+    }
+    if ("sortByGame" in config) {
+        $("#config input[name='sortFavoritesByGame']").prop('checked', config.sortByGame);
+    }
+});
 
 
 /*dom insertion library function from MDN - https://developer.mozilla.org/en-US/docs/XUL_School/DOM_Building_and_HTML_Insertion*/

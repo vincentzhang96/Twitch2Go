@@ -17,37 +17,67 @@
             <li><a href="#config">Configure</a></li>
         </ul>
         <div id="home" class="content">    
-                <h1 id="gameback">&#171;</h1>
-                <h2 id="topgametitle">Top Games Streaming</h2>
-                <div class="scroller" id="gamescroller">
-                    <div class="topgames">
-                        <ul class="gamelist">
+            <h1 id="gameback">&#171;</h1>
+            <h2 id="topgametitle">Top Games Streaming</h2>
+            <div class="scroller" id="gamescroller">
+                <div class="topgames">
+                    <ul class="gamelist">
 
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
             </div>
-            
         </div>
+            
         <div id="fav" class="content">
             <h2>Favorite Channels</h2>
-            <form id="addStreamer" name="addStreamerForm" action="null.html">
-                <input type="text" name="addStreamer" placeholder="Add channel..." size="40">
-                <input type="submit" value="Add"><br/>
-                <span id="addStatus"></span>
-            </form>
-            
+            <div class="scroller" id="favescroller">
+                <form id="addStreamer" name="addStreamerForm" action="null.html">
+                    <input type="text" name="addStreamer" placeholder="Add channel..." size="40">
+                    <input type="submit" value="Add"><br/>
+                    <span id="addStatus"></span>
+                </form>
+                <div class="favorites">
+                    <h2>Online Favorites</h2>
+                    <ul class="onlineFavs">
+                    
+                    </ul>
+                    <h2>Offline Favorites</h2>
+                    <ul class="offlineFavs">
+                    
+                    </ul>
+                </div>
+            </div>
         </div>
         <div id="config" class="content">
             <h2>Configure Twitch2Go</h2>
-            <table>
+            <table class="options-table">
                 <tr>
-                    <td style="width: 280px">Enable desktop toast notifications</td>
+                    <td>Enable desktop toast notifications</td>
                     <td><input type="checkbox" name="toastNotifications"></td>
                 </tr>
                 <tr>
-                    <td>Set poll interval (seconds)</td>
+                    <td>Poll interval (seconds)</td>
                     <td><input type="number" maxlength="4" value="10" name="interval" min="1" max="99" style="width: 50px"></td>
+                </tr>
+                <tr>
+                    <td>Open streams in a new</td>
+                    <td>
+                        <select name="streamOpen">
+                            <option value="newtab">tab</option>
+                            <option value="newwindow">window</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Use popout player</td>
+                    <td><input type="checkbox" name="popoutPlayer"></td>
+                </tr>
+                <tr>
+                    <td>Sort favorites by game</td>
+                    <td><input type="checkbox" name="sortFavoritesByGame"></td>
+                </tr>
+                <tr>
+                    <td><button value="clearFavorites">Clear favorites list</button></td>
                 </tr>
             </table>
         </div>
